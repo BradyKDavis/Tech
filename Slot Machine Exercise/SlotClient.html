@@ -1,0 +1,20 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <title>Slot</title>
+</head>
+<body>
+    <!--A simple client used to test user spins -->
+    <form action="SlotMachine.php" method="post">
+        <p> User ID:</p>
+        <p><input type="number" name="UID" required /> </p>
+        <p> Current Bet:</p>
+        <p><input type="number" name="Bet" required</p>
+        <p> Win amount:</p>
+        <p><input type="number" name="Win" required</p>
+        <input type="hidden" name="salt" value="salt"
+        <p><input type="submit" name="spin" value="Spin for this user ID"/></p>
+    </form>
+</body>
+</html>
