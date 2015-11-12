@@ -23,6 +23,10 @@ class SlotMachine {
         $this->BetCoins = $BetCoins;
         $this->WonCoins = $WonCoins;
         $this->Salt = $salt;
+        if($this->BetCoins < 0){
+            echo 'Player is not able to bet a negative amount of coins.';
+            die();
+        }
     }
     
     function SaveSpin(){
@@ -45,19 +49,23 @@ class SlotMachine {
                                   'LifetimeAverageReturn' => $row[2] / $row[3]);
                     return $post_data = json_encode($data);
                 }
-                return "nothing";
             }
             else{
                 echo "Multi query failed: (" . $mysqli->errno . ") " . $mysqli->error . "<br />";
+                die();
             }
         }
         else{
-            //something is wrong with the client
+            //something is wrong with the client, probably invalid salt value
             return "Error: Client security token invalid";
+            die();
         }
     }
     
-    //hash should be a hash of the salt, playerID, bet, and winnings
+    /*
+     *hash should be a hash of the salt, playerID, bet, and winnings.
+     *Check current salt against salt stored in the server
+     */
     function ValidateHash($originalHash, $PlayerID, $winnings, $bet){
         $mysqli = SlotMachine::getConnection();
         if($result = $mysqli->query("SELECT Salt FROM Slot_Machine WHERE PlayerID = " . $PlayerID . ";")){
@@ -75,7 +83,7 @@ class SlotMachine {
             }
             else{
                 echo "Player with this ID not found." ;
-                return false;
+                die();
             }
         }
         else{
@@ -85,6 +93,7 @@ class SlotMachine {
     }
     
     //Inserts new user with default settings and new name and salt
+    //Initially used by an AddClient html to add further clients to server.
     static function AddUser($Name){
         $mysqli = SlotMachine::getConnection();
 
@@ -100,12 +109,13 @@ class SlotMachine {
         }
     }
     
-    
+    //Generates sha256 hash for salt, ID, bet, and win for this instance
     function GenerateHash(){
         $args = $this->Salt . $this->PlayerID . $this->BetCoins . $this->WonCoins;
         return hash("sha256", serialize($args));
     }
     
+    //Gets connection information for this slot machine sql server.
     static function getConnection(){
         $mysqli = new mysqli("127.0.0.1", "test", "test", "SlotMachineSpin", 8889);
         if($mysqli->connect_errno){
