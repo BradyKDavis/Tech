@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.6.27)
 # Database: test
-# Generation Time: 2015-11-11 17:43:13 +0000
+# Generation Time: 2015-11-12 02:12:31 +0000
 # ************************************************************
 
 
@@ -30,7 +30,7 @@ CREATE TABLE `Tech_Lifespans` (
   `Birth_Year` int(11) NOT NULL,
   `Death_Year` int(11) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=105 DEFAULT CHARSET=latin1;
 
 LOCK TABLES `Tech_Lifespans` WRITE;
 /*!40000 ALTER TABLE `Tech_Lifespans` DISABLE KEYS */;
@@ -136,7 +136,11 @@ VALUES
 	(97,1998,1999),
 	(98,1998,1999),
 	(99,1998,1999),
-	(100,1998,1999);
+	(100,1998,1999),
+	(101,1930,1930),
+	(102,1901,1900),
+	(103,1899,1900),
+	(104,1900,2001);
 
 /*!40000 ALTER TABLE `Tech_Lifespans` ENABLE KEYS */;
 UNLOCK TABLES;
